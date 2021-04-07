@@ -6,6 +6,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int selectedPage = 0;
+  PageController pageController = PageController(initialPage: 0);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,15 +17,39 @@ class _HomePageState extends State<HomePage> {
         Container(color: Colors.white),
         SafeArea(
             child: Container(
-          color: whiteColor,
+          color: Colors.white,
         )),
         SafeArea(
-            child: Center(
-          child: Text("body area"),
+            child: PageView(
+          controller: PageController(),
+          onPageChanged: (index) {
+            setState(() {
+              selectedPage = index;
+            });
+          },
+          children: [
+            Center(
+              child: Text("Home"),
+            ),
+            Center(
+              child: Text("Order"),
+            ),
+            Center(
+              child: Text("Profile"),
+            ),
+          ],
         )),
         Align(
           alignment: Alignment.bottomCenter,
-          child: Text("Navbar"),
+          child: NavbarButton(
+            selectedIndex: selectedPage,
+            onTap: (index) {
+              setState(() {
+                selectedPage = index;
+              });
+              pageController.jumpToPage(selectedPage);
+            },
+          ),
         ),
       ],
     ));
